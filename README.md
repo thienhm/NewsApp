@@ -1,0 +1,2 @@
+# NewsApp
+an assignment project
