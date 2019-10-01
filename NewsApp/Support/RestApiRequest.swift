@@ -2,8 +2,8 @@
 //  RestApiRequest.swift
 //  Link Up
 //
-//  Created by BJ Low on 21/6/16.
-//  Copyright © 2016 Ozzie Tech Private Limited. All rights reserved.
+//  Created by Thien Huynh on 10/1/19.
+//  Copyright © 2019 Thien Huynh. All rights reserved.
 //
 
 import Foundation

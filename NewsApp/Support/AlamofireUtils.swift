@@ -2,8 +2,8 @@
 //  AlamofireUtils.swift
 //  Link Up
 //
-//  Created by BJ Low on 21/4/17.
-//  Copyright © 2017 Ozzie Tech Private Limited. All rights reserved.
+//  Created by Thien Huynh on 10/1/19.
+//  Copyright © 2019 Thien Huynh. All rights reserved.
 //
 
 import Foundation
