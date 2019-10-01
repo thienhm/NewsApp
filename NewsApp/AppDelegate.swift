@@ -9,7 +9,7 @@
 import UIKit
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, LoginDelegate {
 
     var window: UIWindow?
 
@@ -21,16 +21,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    private func launch() {
+    func launch() {
         
-        let tabbarVC = UITabBarController()
-        
-        
-        tabbarVC.viewControllers = [initTopHeadline(), initCustomNews()]
-        
-        // show tabBarController
         window?.makeKeyAndVisible()
-        window?.rootViewController?.present(tabbarVC, animated: false, completion: nil)
+        
+        // if logged in
+        if let _ = UserManager.shared.currentUser {
+            
+            let tabbarVC = UITabBarController()
+            
+            tabbarVC.viewControllers = [initTopHeadline(), initCustomNews(), initProfile()]
+            
+            self.window?.rootViewController = tabbarVC
+        }
+        else {
+            launchLogin()
+        }
+    }
+    
+    private func launchLogin() {
+        
+        let loginNavigation = UIStoryboard(name: "Login", bundle: Bundle.main).instantiateViewController(withIdentifier: "LoginNavigation") as! UINavigationController
+        
+        if let loginVC = loginNavigation.viewControllers.first as? LogInVC {
+            loginVC.delegate = self
+        }
+        
+        window?.rootViewController = loginNavigation
+    
+    }
+    
+    func loginVC(didLoginWithUser: User) {
+        
+        launch()
     }
     
     private func initTopHeadline() -> UIViewController {
@@ -47,12 +70,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         newListNavigation.tabBarItem.title = "Custom News"
         
         if let newsListVC = newListNavigation.viewControllers.first as? NewsListVC {
-            newsListVC.category = .entertainment
+            newsListVC.category = UserManager.shared.currentUser?.newsCategory
         }
         
         return newListNavigation
     }
     
+    private func initProfile() -> UIViewController {
+        
+        let profileNavigation = UIStoryboard(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "ProfileNavigation") as! UINavigationController
+        profileNavigation.tabBarItem.title = "Profile"
+        
+        if let profileVC = profileNavigation.viewControllers.first as? ProfileVC {
+            profileVC.user = UserManager.shared.currentUser!
+        }
+        
+        return profileNavigation
+    }
     
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
